@@ -1,0 +1,6 @@
+telethon
+requests
+deepface
+jinja2
+sherlock
+maigret
