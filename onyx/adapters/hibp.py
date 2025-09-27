@@ -1,4 +1,5 @@
 import requests
+from typing import Iterator, Dict
 from .base import BaseAdapter, Result
 from time import sleep
 
