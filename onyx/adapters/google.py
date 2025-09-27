@@ -9,6 +9,8 @@ class GoogleAdapter(BaseAdapter):
     def __init__(self, api_key: str, cx: str):
         self.api_key = api_key
         self.cx = cx
+        if not self.api_key or not self.cx:
+            raise ValueError("Google API key and CX are required.")
         self.base_url = "https://www.googleapis.com"
         self.rp = RobotFileParser()
         self.rp.set_url(f"{self.base_url}/robots.txt")
@@ -32,4 +34,4 @@ class GoogleAdapter(BaseAdapter):
                     metadata={"source": self.name}
                 )
         else:
-            raise Exception(f"API error: {resp.status_code}")
+            raise Exception(f"API error: {resp.status_code} - {resp.text}")
