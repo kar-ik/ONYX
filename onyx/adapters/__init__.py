@@ -1,18 +1,38 @@
-from .google import GoogleAdapter
-from .hibp import HIBPAdapter
+import requests
+from typing import Iterator, Dict, Optional
+from .base import BaseAdapter, Result
+from time import sleep
 
-def get_adapters(sources=None, config=None):
-    all_adapters = []
+class HIBPAdapter(BaseAdapter):
+    name = "hibp"
 
-    if config.get("GOOGLE_API_KEY") and config.get("GOOGLE_CX"):
-        all_adapters.append(
-            GoogleAdapter(config.get("GOOGLE_API_KEY"), config.get("GOOGLE_CX"))
-        )
+    def __init__(self, api_key: Optional[str] = None):
+        if not api_key:
+            raise ValueError("HIBP API key is required.")
+        self.api_key = api_key
 
-    if config.get("HIBP_API_KEY"):
-        all_adapters.append(HIBPAdapter(config.get("HIBP_API_KEY")))
+    def search(self, query: str, params: Dict = None) -> Iterator[Result]:
+        url = f"https://haveibeenpwned.com/api/v3/breachedaccount/{query}"
+        headers = {
+            "User-Agent": "ONYX-OSINT-CLI",
+            "hibp-api-key": self.api_key
+        }
+        sleep(1.5)  
 
-    if sources:
-        return [a for a in all_adapters if a.name in sources]
+        resp = requests.get(url, headers=headers)
 
-    return all_adapters
+        if resp.status_code == 200:
+            breaches = resp.json()
+            for breach in breaches:
+                yield Result(
+                    url=f"https://haveibeenpwned.com/PwnedWebsites#{breach['Name']}",
+                    title=breach['Name'],
+                    snippet=breach['Description'],
+                    raw=str(breach),
+                    timestamp=breach.get("BreachDate", ""),
+                    metadata={"source": self.name}
+                )
+        elif resp.status_code == 404:
+            return  
+        else:
+            raise Exception(f"HIBP API error: {resp.status_code} - {resp.text}")
