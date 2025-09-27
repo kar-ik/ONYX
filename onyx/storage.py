@@ -1,6 +1,5 @@
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
 
 DB_PATH = "onyx.db"
 
