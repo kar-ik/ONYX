@@ -4,7 +4,7 @@ from rich.console import Console
 from rich.table import Table
 from .adapters import get_adapters
 from .services import normalize_results, resolve_entities
-from .storage import save_results, get_db_session
+from .storage import save_results, get_db_session, init_db as storage_init_db
 from .utils import export_to_csv, print_timeline
 from .config import load_config
 
@@ -65,5 +65,10 @@ def search(query: str, sources: Optional[str] = None, export: Optional[str] = No
         export_to_csv(normalized, export)
         console.print(f"[green]Exported to {export}[/]")
 
-if __name__ == "__main__":
-    app()
+@app.command()
+def init_db():
+    """
+    Initialize the database.
+    """
+    storage_init_db()
+    console.print("[green]Database initialized.[/]")
