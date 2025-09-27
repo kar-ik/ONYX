@@ -2,6 +2,14 @@
 
 A lightweight CLI tool for ethical OSINT, collecting public data from sources like Google and HaveIBeenPwned.
 
+## Ethical Use
+
+For educational purposes only.
+Only use with public data; comply with laws (GDPR, CCPA).
+Respects robots.txt and API terms.
+Logs saved to onyx.log.
+For takedown requests, contact: [tmd772t7y@mozmail.com].
+
 ## Features
 - Search by email, username, etc.
 - Modular adapters (Google, HIBP)
@@ -18,3 +26,9 @@ A lightweight CLI tool for ethical OSINT, collecting public data from sources li
    ```python
    from onyx.storage import init_db
    init_db()
+
+## Usage 
+`python -m onyx search "test@example.com" --sources google,hibp --export results.csv`
+
+--sources: Comma-separated (google,hibp). Default: all
+--export: Save to CSV file
