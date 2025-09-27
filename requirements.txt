@@ -1,0 +1,6 @@
+typer
+requests
+pydantic
+rich
+python-dotenv
+pytest
