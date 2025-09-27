@@ -8,7 +8,7 @@ class HIBPAdapter(BaseAdapter):
     def search(self, query: str, params: Dict) -> Iterator[Result]:
         url = f"https://haveibeenpwned.com/api/v3/breachedaccount/{query}"
         headers = {"User-Agent": "ONYX-OSINT-CLI"}
-        sleep(1.5) 
+        sleep(1.5)  
         resp = requests.get(url, headers=headers)
         if resp.status_code == 200:
             breaches = resp.json()
