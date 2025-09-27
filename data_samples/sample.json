@@ -1,0 +1,10 @@
+[
+    {
+        "url": "http://example.com",
+        "title": "Sample Result",
+        "snippet": "This is a test result.",
+        "raw": "<p>Test</p>",
+        "timestamp": "2023-01-01",
+        "metadata": {"source": "test"}
+    }
+]
